@@ -1,26 +1,33 @@
-const userElem = $(".user");
-const postsListElem = $(".post-list");
-const tableElem = $(".info-table");
+const postsListElem = $("tbody");
 
-let fetchLink;
-
-async function infoGeter(){
-    fetch('https://jsonplaceholder.typicode.com/posts')
-    .then( result => result.json() )
-    .then( dataArray => {
-        dataArray.forEach(data => {
-            populateTable(data);
-        });
-    });
+async function getter(){
+    return await  fetch('https://jsonplaceholder.typicode.com/posts')
+    .then(response => response.json());
 }
 
-async function populateTable(data){
-    $(`<tr>
-        <td class="user">${data.id}</td>
-        <td class="post">
-            <h3>${data.title}</h3>
-            <br> ${data.body}</td>
-    </tr>`).appendTo(tableElem);
+async function populate(){
+    let userData = await getter();
+    
+    for(let [i,name] of userData.entries()){
+        i > 0 && name.userId === userData[i-1].userId ? console.log('here') : $(`<option value="${name.userId}">${name.userId}</option>`).appendTo( '#userSelect' )
+    }
 }
 
-infoGeter();
+async function updateTable(){
+    let user = Number($("#userSelect").val());
+    let userData = await getter();
+    postsListElem.empty();
+    
+    for(let [i,name] of userData.entries()){
+        if(name.userId === user){
+            $(`<tr>
+                <td class="post">
+                    <h3>${name.id}</h3>
+                    <br> ${name.body}
+                </td>
+            </tr>`).appendTo(postsListElem);
+        }
+    }
+}
+
+populate();

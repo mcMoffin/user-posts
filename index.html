@@ -9,10 +9,18 @@
 </head>
 <body>
     <table class="info-table">
-        <tr>
-            <th>User</th>
-            <th>Posts</th>
-        </tr>
+        <thead>
+            <tr>
+                <th>
+                    <label for="userSelect">User</label>
+                    <select name="userSelect" id="userSelect" onchange="updateTable()">                
+                        <option value="">Select user</option>
+                    </select>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="post_list">
+        </tbody>
     </table>
 </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
